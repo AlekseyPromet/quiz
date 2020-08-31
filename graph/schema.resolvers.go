@@ -6,13 +6,27 @@ package graph
 import (
 	"context"
 	"fmt"
+	"log"
 
-	"github.com/alekseypromet/todograph/graph/generated"
-	"github.com/alekseypromet/todograph/graph/model"
+	database "github.com/AlekseyPromet/quiz/db"
+	"github.com/AlekseyPromet/quiz/generated"
+	"github.com/AlekseyPromet/quiz/model"
 )
 
 func (r *mutationResolver) CreateQuestion(ctx context.Context, input model.QuestionInput) (*model.Question, error) {
-	panic(fmt.Errorf("not implemented"))
+	db, err := database.GetDatabase()
+	if err != nil {
+		log.Println("Unable to connect to databse", err)
+		return nil, err
+	}
+	defer db.Close()
+
+	question := model.Questions{}
+	question.QuestionText = input.QuestionText
+	question.pubDate = input.PubDate
+
+	db.Create(&question)
+	return &question, nil
 }
 
 func (r *mutationResolver) CreateChoice(ctx context.Context, input *model.ChoiceInput) (*model.Choice, error) {

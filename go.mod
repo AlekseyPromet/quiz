@@ -1,4 +1,4 @@
-module github.com/AlekseyPromet/todograph
+module github.com/AlekseyPromet/quiz
 
 go 1.15
 
